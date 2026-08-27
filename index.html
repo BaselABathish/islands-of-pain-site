@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Islands of Pain — Download</title>
+<meta name="description" content="Islands of Pain — a turn-based hex strategy game for 2–8 players. Free download for Windows.">
+
+<!-- Open Graph: makes shared links look right in Discord/Slack/Twitter -->
+<meta property="og:title" content="Islands of Pain">
+<meta property="og:description" content="A turn-based hex strategy game for 2–8 players. Place a castle, build an economy, destroy your rivals.">
+<meta property="og:type" content="website">
+
+<style>
+  :root {
+    --bg:        #0f1218;
+    --bg-raised: #161b24;
+    --bg-inset:  #1d2430;
+    --line:      #2a3240;
+    --text:      #e6eaf2;
+    --text-dim:  #9aa5b8;
+    --accent:    #4d8cff;
+    --accent-2:  #f2663f;
+    --ok:        #4fc57d;
+    --radius:    14px;
+    --maxw:      920px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- hero ---------- */
+  header {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(900px 420px at 15% -10%, rgba(77,140,255,.18), transparent 60%),
+      radial-gradient(700px 380px at 90% 0%, rgba(242,102,63,.14), transparent 60%);
+  }
+
+  /* Faint hex lattice behind the hero, drawn as an inline SVG data URI. */
+  header::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='56' height='96' viewBox='0 0 56 96'>\
+<g fill='none' stroke='%23ffffff' stroke-opacity='0.05' stroke-width='1'>\
+<path d='M28 0 L52 14 L52 42 L28 56 L4 42 L4 14 Z'/>\
+<path d='M28 48 L52 62 L52 90 L28 104 L4 90 L4 62 Z'/>\
+</g></svg>");
+    background-size: 56px 96px;
+    pointer-events: none;
+  }
+
+  .hero { position: relative; padding: 76px 0 64px; text-align: center; }
+
+  .badge {
+    display: inline-block;
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.03);
+    padding: 5px 12px; border-radius: 999px;
+    margin-bottom: 22px;
+  }
+
+  h1 {
+    margin: 0 0 14px;
+    font-size: clamp(2.3rem, 6vw, 3.8rem);
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    font-weight: 700;
+  }
+
+  .tagline {
+    margin: 0 auto 34px;
+    max-width: 620px;
+    font-size: clamp(1rem, 2.4vw, 1.2rem);
+    color: var(--text-dim);
+  }
+
+  /* ---------- buttons ---------- */
+  .cta-row {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    justify-content: center; align-items: center;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 26px;
+    border-radius: 10px;
+    font-weight: 600; font-size: 1.02rem;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: transform .12s ease, background .12s ease, border-color .12s ease;
+  }
+  .btn:hover  { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(77,140,255,.28);
+  }
+  .btn-primary:hover { background: #5f99ff; }
+
+  .btn-ghost {
+    background: rgba(255,255,255,.04);
+    border-color: var(--line);
+    color: var(--text);
+  }
+  .btn-ghost:hover { border-color: #3c485a; background: rgba(255,255,255,.07); }
+
+  .meta {
+    margin-top: 16px;
+    font-size: .86rem;
+    color: var(--text-dim);
+  }
+
+  /* ---------- sections ---------- */
+  section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+
+  h2 {
+    margin: 0 0 8px;
+    font-size: 1.45rem;
+    letter-spacing: -.01em;
+  }
+  .sub { margin: 0 0 28px; color: var(--text-dim); }
+
+  .grid {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .card {
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .card h3 {
+    margin: 0 0 6px;
+    font-size: 1rem;
+    display: flex; align-items: center; gap: 9px;
+  }
+  .card p { margin: 0; color: var(--text-dim); font-size: .93rem; }
+
+  .dot { width: 10px; height: 10px; border-radius: 3px; flex: 0 0 auto; }
+
+  /* ---------- steps ---------- */
+  ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; }
+  ol.steps li {
+    counter-increment: s;
+    position: relative;
+    padding: 0 0 18px 46px;
+    border-left: 1px solid var(--line);
+    margin-left: 14px;
+  }
+  ol.steps li:last-child { border-left-color: transparent; padding-bottom: 0; }
+  ol.steps li::before {
+    content: counter(s);
+    position: absolute; left: -15px; top: -2px;
+    width: 30px; height: 30px;
+    display: grid; place-items: center;
+    background: var(--bg-inset);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    font-size: .82rem; font-weight: 700; color: var(--accent);
+  }
+  ol.steps strong { display: block; margin-bottom: 2px; }
+  ol.steps span { color: var(--text-dim); font-size: .93rem; }
+
+  /* ---------- controls table ---------- */
+  .controls { display: grid; gap: 10px; }
+  .ctrl {
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    gap: 14px; align-items: baseline;
+    padding: 11px 14px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .ctrl span { color: var(--text-dim); font-size: .93rem; }
+  kbd {
+    display: inline-block;
+    font: 600 .78rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background: var(--bg-inset);
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    padding: 5px 7px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  @media (max-width: 560px) {
+    .ctrl { grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  /* ---------- notice ---------- */
+  .notice {
+    display: flex; gap: 13px;
+    background: rgba(242,102,63,.07);
+    border: 1px solid rgba(242,102,63,.28);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    font-size: .93rem;
+  }
+  .notice .icon { color: var(--accent-2); font-weight: 700; flex: 0 0 auto; }
+  .notice p { margin: 0 0 8px; }
+  .notice p:last-child { margin: 0; color: var(--text-dim); }
+
+  footer {
+    padding: 34px 0 46px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: .88rem;
+  }
+  footer a { color: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hero">
+    <div class="badge">Version 0.2 &middot; Early build</div>
+    <h1>Islands&nbsp;of&nbsp;Pain</h1>
+    <p class="tagline">
+      A turn-based hex strategy game for 2–8 players. Claim an island, grow an
+      economy, raise an army, and be the last castle standing.
+    </p>
+
+    <div class="cta-row">
+      <!-- TODO: point this at your GitHub Release asset -->
+      <a class="btn btn-primary" href="DOWNLOAD_URL_HERE" download>
+        &#x2b07; Download for Windows
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/BaselABathish/Islands_of_pain">
+        View source on GitHub
+      </a>
+    </div>
+
+    <p class="meta">Windows 64-bit &middot; no installer, just unzip and run &middot; free</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>What it is</h2>
+    <p class="sub">Simultaneous scheming, one turn at a time.</p>
+    <div class="grid">
+      <div class="card">
+        <h3><span class="dot" style="background:#4d8cff"></span> Claim your ground</h3>
+        <p>Choose where your castle goes on turn one. Position is the first real decision you make.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot" style="background:#4fc57d"></span> Feed your army</h3>
+        <p>Farms and mines fund everything. Let food run dry and your troops starve — literally.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot" style="background:#f2663f"></span> Break their walls</h3>
+        <p>Swordsmen, archers, walls and gates. Only one thing wins: the enemy castle in ruins.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot" style="background:#c07af0"></span> 2–8 players</h3>
+        <p>Free-for-all online with a room code, over a LAN, or solo against bots.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Getting started</h2>
+    <p class="sub">About a minute from download to first turn.</p>
+    <ol class="steps">
+      <li>
+        <strong>Download and unzip</strong>
+        <span>Keep the <code>.exe</code> and its files together in one folder.</span>
+      </li>
+      <li>
+        <strong>Run the game</strong>
+        <span>Windows may warn about an unrecognised app — choose <em>More info → Run anyway</em>. It is unsigned, not malicious.</span>
+      </li>
+      <li>
+        <strong>Play solo first</strong>
+        <span>Pick <em>LAN / Direct → Host Game</em>, press <em>Add random bot</em>, then <em>Start Game</em>. No setup, no server.</span>
+      </li>
+      <li>
+        <strong>Play with friends</strong>
+        <span>Choose <em>Play Online</em>. One of you creates a room and shares the four-letter code; everyone else joins with it.</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Controls</h2>
+    <p class="sub">Everything is mouse-driven except panning.</p>
+    <div class="controls">
+      <div class="ctrl"><kbd>Left click</kbd><span>Select one of your units, then click a highlighted hex to move or attack.</span></div>
+      <div class="ctrl"><kbd>Right click</kbd><span>On your castle or barracks: train units. With a worker selected, on an empty hex: build.</span></div>
+      <div class="ctrl"><kbd>Middle drag</kbd> / <kbd>W A S D</kbd><span>Pan the board.</span></div>
+      <div class="ctrl"><kbd>End Turn</kbd><span>Bottom-right button. Turns also end automatically when the timer runs out.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Before you download</h2>
+    <div class="notice">
+      <div class="icon">!</div>
+      <div>
+        <p><strong>This is an early build.</strong> Graphics are placeholder coloured shapes, there is no sound, and balance is unfinished — long games can stall without a decisive winner.</p>
+        <p>Online play runs through a free-tier server that sleeps when idle, so the first connection after a quiet spell may fail. Wait a minute and try again. Solo and LAN games need no server at all.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Built with <a href="https://godotengine.org">Godot 4</a> &middot;
+    <a href="https://github.com/BaselABathish/Islands_of_pain">Source</a> &middot;
+    <a href="https://github.com/BaselABathish/Islands_of_pain/blob/main/SPECIFICATION.md">Technical spec</a>
+  </div>
+</footer>
+
+</body>
+</html>
