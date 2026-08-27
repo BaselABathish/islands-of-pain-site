@@ -140,7 +140,15 @@
     font-size: 1.45rem;
     letter-spacing: -.01em;
   }
+  h3.step-head {
+    margin: 34px 0 10px;
+    font-size: 1.08rem;
+    color: var(--text);
+  }
+  h3.step-head:first-of-type { margin-top: 0; }
   .sub { margin: 0 0 28px; color: var(--text-dim); }
+  section p { color: var(--text-dim); }
+  section p.lead { color: var(--text); }
 
   .grid {
     display: grid; gap: 16px;
@@ -161,6 +169,19 @@
   .card p { margin: 0; color: var(--text-dim); font-size: .93rem; }
 
   .dot { width: 10px; height: 10px; border-radius: 3px; flex: 0 0 auto; }
+
+  /* ---------- the goal callout ---------- */
+  .goal {
+    display: flex; gap: 16px; align-items: center;
+    background: linear-gradient(135deg, rgba(77,140,255,.12), rgba(242,102,63,.10));
+    border: 1px solid rgba(77,140,255,.32);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin: 0 0 34px;
+  }
+  .goal .crown { font-size: 1.8rem; line-height: 1; flex: 0 0 auto; }
+  .goal p { margin: 0; color: var(--text); font-size: 1.06rem; }
+  .goal strong { color: #fff; }
 
   /* ---------- steps ---------- */
   ol.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; }
@@ -185,7 +206,47 @@
   ol.steps strong { display: block; margin-bottom: 2px; }
   ol.steps span { color: var(--text-dim); font-size: .93rem; }
 
-  /* ---------- controls table ---------- */
+  /* ---------- tables ---------- */
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .93rem;
+    min-width: 520px;
+  }
+  caption {
+    text-align: left;
+    color: var(--text-dim);
+    font-size: .88rem;
+    padding-bottom: 10px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  th {
+    color: var(--text-dim);
+    font-weight: 600;
+    font-size: .8rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    border-bottom-color: #3a4455;
+  }
+  td.num, th.num { text-align: right; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover { background: rgba(255,255,255,.02); }
+  .unit-name { color: var(--text); font-weight: 600; white-space: nowrap; }
+  .glyph {
+    display: inline-grid; place-items: center;
+    width: 22px; height: 22px; margin-right: 9px;
+    border-radius: 5px;
+    font: 700 .72rem/1 ui-monospace, Menlo, Consolas, monospace;
+    color: #0f1218;
+    vertical-align: -4px;
+  }
+
+  /* ---------- controls ---------- */
   .controls { display: grid; gap: 10px; }
   .ctrl {
     display: grid;
@@ -212,7 +273,13 @@
     .ctrl { grid-template-columns: 1fr; gap: 6px; }
   }
 
-  /* ---------- notice ---------- */
+  /* ---------- lists ---------- */
+  ul.plain { margin: 0; padding-left: 20px; color: var(--text-dim); }
+  ul.plain li { margin-bottom: 8px; }
+  ul.plain li:last-child { margin-bottom: 0; }
+  ul.plain strong { color: var(--text); }
+
+  /* ---------- notices ---------- */
   .notice {
     display: flex; gap: 13px;
     background: rgba(242,102,63,.07);
@@ -224,6 +291,17 @@
   .notice .icon { color: var(--accent-2); font-weight: 700; flex: 0 0 auto; }
   .notice p { margin: 0 0 8px; }
   .notice p:last-child { margin: 0; color: var(--text-dim); }
+
+  .tip {
+    background: rgba(79,197,125,.07);
+    border: 1px solid rgba(79,197,125,.28);
+    border-radius: var(--radius);
+    padding: 15px 18px;
+    margin-top: 24px;
+    font-size: .93rem;
+  }
+  .tip strong { color: var(--ok); }
+  .tip p { margin: 0; }
 
   footer {
     padding: 34px 0 46px;
@@ -246,12 +324,11 @@
     </p>
 
     <div class="cta-row">
-      <!-- TODO: point this at your GitHub Release asset -->
       <a class="btn btn-primary" href="Islands_of_pain_DEMO_windows.zip" download>
         &#x2b07; Download for Windows
       </a>
-      <a class="btn btn-ghost" href="https://github.com/BaselABathish/Islands_of_pain">
-        View source on GitHub
+      <a class="btn btn-ghost" href="#how-to-play">
+        How to play
       </a>
     </div>
 
@@ -262,7 +339,7 @@
 <section>
   <div class="wrap">
     <h2>What it is</h2>
-    <p class="sub">Simultaneous scheming, one turn at a time.</p>
+    <p class="sub">Slow scheming, one turn at a time.</p>
     <div class="grid">
       <div class="card">
         <h3><span class="dot" style="background:#4d8cff"></span> Claim your ground</h3>
@@ -309,12 +386,192 @@
   </div>
 </section>
 
+<!-- ============ HOW TO PLAY ============ -->
+<section id="how-to-play">
+  <div class="wrap">
+    <h2>How to play</h2>
+    <p class="sub">Everything you need for your first game.</p>
+
+    <div class="goal">
+      <div class="crown">&#x265B;</div>
+      <p><strong>The goal:</strong> destroy every other player's castle. Lose your
+      own and you are out. The last player with a castle wins.</p>
+    </div>
+
+    <h3 class="step-head">1. Your first turn: place your castle</h3>
+    <p class="lead">
+      You begin with <strong>50 food</strong>, <strong>30 stone</strong>, and an empty board.
+    </p>
+    <p>
+      Highlighted hexes show where your castle can go — click one. A
+      <strong>worker</strong> appears beside it and your turn ends immediately.
+      That is the entire first turn. You must keep some distance from other
+      castles, so nobody can drop one on top of you.
+    </p>
+
+    <h3 class="step-head">2. Taking a turn</h3>
+    <p>
+      Players act one at a time. When it is your turn, you can issue as many legal
+      actions as you like, then press <strong>End Turn</strong>. Each unit may
+      <strong>move once</strong>, <strong>attack once</strong> and
+      <strong>build once</strong> per turn — so a soldier can move <em>and</em>
+      attack, and a worker can move <em>and</em> build.
+    </p>
+    <p>
+      Click any hex to inspect it in the bottom-right panel: what is there, who
+      owns it, its health, and what your unit still has left to do.
+    </p>
+
+    <h3 class="step-head">3. Units</h3>
+    <div class="table-scroll">
+      <table>
+        <caption>Workers are trained at your castle; soldiers at a barracks. One unit per building per turn, and new units cannot act until your next turn.</caption>
+        <thead>
+          <tr>
+            <th>Unit</th>
+            <th class="num">Health</th>
+            <th class="num">Damage</th>
+            <th class="num">Range</th>
+            <th class="num">Cost</th>
+            <th class="num">Upkeep</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="unit-name"><span class="glyph" style="background:#9aa5b8">W</span>Worker</td>
+            <td class="num">10</td><td class="num">—</td><td class="num">—</td>
+            <td class="num">5 food</td><td class="num">1 food</td>
+            <td>Builds everything. Cannot fight.</td>
+          </tr>
+          <tr>
+            <td class="unit-name"><span class="glyph" style="background:#f2663f">S</span>Swordsman</td>
+            <td class="num">15</td><td class="num">10</td><td class="num">1 hex</td>
+            <td class="num">10 food</td><td class="num">3 food</td>
+            <td>Toughest hitter, but must stand next to its target.</td>
+          </tr>
+          <tr>
+            <td class="unit-name"><span class="glyph" style="background:#4d8cff">A</span>Archer</td>
+            <td class="num">10</td><td class="num">8</td><td class="num">5 hexes</td>
+            <td class="num">15 food</td><td class="num">5 food</td>
+            <td>Strikes from range, often unanswered. Fragile and costly.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="step-head">4. Buildings</h3>
+    <div class="table-scroll">
+      <table>
+        <caption>Built by workers on an empty hex next to them. All costs are in stone.</caption>
+        <thead>
+          <tr>
+            <th>Building</th>
+            <th class="num">Health</th>
+            <th class="num">Cost</th>
+            <th>What it does</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="unit-name"><span class="glyph" style="background:#4fc57d">F</span>Farm</td>
+            <td class="num">30</td><td class="num">10</td>
+            <td>+5 food per turn</td>
+          </tr>
+          <tr>
+            <td class="unit-name"><span class="glyph" style="background:#c9a227">M</span>Mine</td>
+            <td class="num">30</td><td class="num">20</td>
+            <td>+5 stone per turn</td>
+          </tr>
+          <tr>
+            <td class="unit-name"><span class="glyph" style="background:#f2663f">B</span>Barracks</td>
+            <td class="num">50</td><td class="num">20</td>
+            <td>Trains swordsmen and archers</td>
+          </tr>
+          <tr>
+            <td class="unit-name"><span class="glyph" style="background:#9aa5b8">#</span>Wall</td>
+            <td class="num">40</td><td class="num">15</td>
+            <td>Blocks movement — for everyone, including you</td>
+          </tr>
+          <tr>
+            <td class="unit-name"><span class="glyph" style="background:#7a8699">G</span>Gate</td>
+            <td class="num">40</td><td class="num">20</td>
+            <td>Blocks enemies; your own units walk through freely</td>
+          </tr>
+          <tr>
+            <td class="unit-name"><span class="glyph" style="background:#4d8cff">C</span>Castle</td>
+            <td class="num">100</td><td class="num">—</td>
+            <td>Trains workers. <strong>Lose it and you are out.</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="step-head">5. Food and stone</h3>
+    <p>
+      At the <strong>start of your turn</strong> your farms and mines pay out, and
+      then your units eat. Every unit costs food every single turn.
+    </p>
+    <p>
+      Here is the number that decides most games: <strong>a farm produces 5 food,
+      and five workers eat exactly that.</strong> An army has to be paid for.
+    </p>
+    <div class="notice">
+      <div class="icon">!</div>
+      <div>
+        <p><strong>If your food drops below zero, your units starve.</strong> Each
+        one loses 20% of its maximum health per turn and they can die of it. The
+        food counter turns red to warn you.</p>
+        <p>Climbing back above zero stops the damage — but nothing heals.</p>
+      </div>
+    </div>
+
+    <h3 class="step-head">6. How to actually win</h3>
+    <ol class="steps">
+      <li>
+        <strong>Build a mine early</strong>
+        <span>Stone is the real bottleneck. Your starting 30 buys very little, and without a mine you simply stop being able to build.</span>
+      </li>
+      <li>
+        <strong>Then farms — before soldiers</strong>
+        <span>Troops you cannot feed will starve. Budget roughly one farm per soldier you intend to keep.</span>
+      </li>
+      <li>
+        <strong>Add a barracks</strong>
+        <span>Swordsmen to break things, archers to whittle from safety.</span>
+      </li>
+      <li>
+        <strong>March on a castle</strong>
+        <span>100 health means ten hits from a single swordsman. Bring a group, or you will never finish the job.</span>
+      </li>
+      <li>
+        <strong>Do not leave home undefended</strong>
+        <span>Walls and gates buy time, and an unguarded castle is the easiest target on the board.</span>
+      </li>
+    </ol>
+    <div class="tip">
+      <p><strong>In short:</strong> economy first, army second, siege third.
+      Rushing straight to soldiers is the most common way to lose — they starve
+      before they arrive.</p>
+    </div>
+
+    <h3 class="step-head">Good to know</h3>
+    <ul class="plain">
+      <li>Two units can never share a hex, and buildings block movement — <strong>including your own walls</strong>. Only your <strong>gate</strong> lets your units pass.</li>
+      <li>There is <strong>no fog of war</strong>: you can see the whole board at all times.</li>
+      <li>Archers ignore line of sight — anything within 5 hexes is a valid target.</li>
+      <li>In a free-for-all, <strong>everyone else is an enemy</strong>. There are no alliances.</li>
+      <li>If a player disconnects they are eliminated, and the game carries on.</li>
+    </ul>
+  </div>
+</section>
+
 <section>
   <div class="wrap">
     <h2>Controls</h2>
     <p class="sub">Everything is mouse-driven except panning.</p>
     <div class="controls">
-      <div class="ctrl"><kbd>Left click</kbd><span>Select one of your units, then click a highlighted hex to move or attack.</span></div>
+      <div class="ctrl"><kbd>Left click</kbd><span>Select one of your units, then click a highlighted hex to move (blue) or attack (red).</span></div>
       <div class="ctrl"><kbd>Right click</kbd><span>On your castle or barracks: train units. With a worker selected, on an empty hex: build.</span></div>
       <div class="ctrl"><kbd>Middle drag</kbd> / <kbd>W A S D</kbd><span>Pan the board.</span></div>
       <div class="ctrl"><kbd>End Turn</kbd><span>Bottom-right button. Turns also end automatically when the timer runs out.</span></div>
@@ -328,8 +585,8 @@
     <div class="notice">
       <div class="icon">!</div>
       <div>
-        <p><strong>This is an early build.</strong> Graphics are placeholder coloured shapes, there is no sound, and balance is unfinished — long games can stall without a decisive winner.</p>
-        <p>Online play runs through a free-tier server that sleeps when idle, so the first connection after a quiet spell may fail. Wait a minute and try again. Solo and LAN games need no server at all.</p>
+        <p><strong>This is an early build.</strong> Graphics are placeholder coloured shapes, there is no sound, and balance is unfinished — long games can stall without a decisive winner if everyone neglects their economy.</p>
+        <p>Online play runs through a free-tier server that sleeps when idle, so the first connection after a quiet spell may take a minute or need a retry. Solo and LAN games need no server at all.</p>
       </div>
     </div>
   </div>
@@ -337,9 +594,7 @@
 
 <footer>
   <div class="wrap">
-    Built with <a href="https://godotengine.org">Godot 4</a> &middot;
-    <a href="https://github.com/BaselABathish/Islands_of_pain">Source</a> &middot;
-    <a href="https://github.com/BaselABathish/Islands_of_pain/blob/main/SPECIFICATION.md">Technical spec</a>
+    Built with <a href="https://godotengine.org">Godot 4</a>
   </div>
 </footer>
 
